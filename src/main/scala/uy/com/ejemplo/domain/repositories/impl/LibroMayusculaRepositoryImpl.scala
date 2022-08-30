@@ -5,6 +5,8 @@ import reactivemongo.api.bson.BSONDocument
 import reactivemongo.api.commands.WriteResult
 import uy.com.ejemplo.domain.entities.Libro
 import uy.com.ejemplo.domain.repositories.LibroRepository
+import uy.com.ejemplo.domain.repositories.impl.LibroRepositoryImpl.conexionMongoDB
+import uy.com.ejemplo.domain.respuestas.MensajeRespuesta
 import uy.com.ejemplo.infrastructure.db.mongo.ConexionBD
 
 import java.util.UUID
@@ -29,6 +31,17 @@ object LibroMayusculaRepositoryImpl extends LibroRepository {
     conexionMongoDB.getColeccion("Libros").flatMap { col =>
       col.insert.one(libro.copy(nombre = libro.nombre.toUpperCase(), isbn = UUID.randomUUID().toString))
     }
+  }
+
+  override def delete(idLibro: String): Future[Either[MensajeRespuesta, MensajeRespuesta]] = {
+    conexionMongoDB.getColeccion("Libros").flatMap(collection =>
+      collection.findAndRemove(BSONDocument("_id" -> idLibro)))
+      .map(e =>
+        if (e.value.isDefined)
+          Right(MensajeRespuesta(s"Se elimino el libro con id [$idLibro]", 202))
+        else
+          Left(MensajeRespuesta(s"Se elimino el libro con id [$idLibro]", 404))
+      )
   }
 
 }

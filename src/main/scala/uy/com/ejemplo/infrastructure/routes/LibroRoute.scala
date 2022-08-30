@@ -48,6 +48,17 @@ case class LibroRoute(repository: LibroRepository) extends LibroService {
         }
     }
 
+  private lazy val eliminarLibroPorIsbn: Route =
+    path("api-libreria" / "libros" / "eliminar-por-isbn" / Segment) {
+      isbn =>
+        delete {
+          onSuccess(run(LibroServiceImpl.eliminarLibro(isbn))) {
+            case Right(value) => complete(value.statusCode, value.mensaje)
+            case Left(value) => complete(value.statusCode, value.mensaje)
+          }
+        }
+    }
+
   private lazy val crearLibro: Route =
     path("api-libreria" / "libros" / "crear") {
       entity(as[LibroDto]) {
@@ -63,7 +74,7 @@ case class LibroRoute(repository: LibroRepository) extends LibroService {
 
 
   val routes: Route = cors() {
-    concat(obtenerLibros, obtenerLibroPorIsbn, crearLibro)
+    concat(obtenerLibros, obtenerLibroPorIsbn, crearLibro, eliminarLibroPorIsbn)
   }
 
 

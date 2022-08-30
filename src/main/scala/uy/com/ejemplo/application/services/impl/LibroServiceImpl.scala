@@ -50,5 +50,14 @@ object LibroServiceImpl extends LibroService {
     )
   }
 
+  def eliminiarLibroPorId(idLibro: String): Kleisli[Id.Id, LibroRepository, Future[MensajeRespuesta]] = {
+    eliminarLibro(idLibro).map(futureResponse =>
+      futureResponse
+        .flatMap {
+          case Right(value) => Future(value)
+          case Left(value) => Future(value)
+        }
+    )
+  }
 
 }

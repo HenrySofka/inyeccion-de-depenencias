@@ -5,14 +5,13 @@ import reactivemongo.api.bson.BSONDocument
 import reactivemongo.api.commands.WriteResult
 import uy.com.ejemplo.domain.entities.Libro
 import uy.com.ejemplo.domain.repositories.LibroRepository
+import uy.com.ejemplo.domain.respuestas.MensajeRespuesta
 import uy.com.ejemplo.infrastructure.db.mongo.ConexionBD
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 object LibroRepositoryImpl extends LibroRepository {
-
-
   private val conexionMongoDB: ConexionBD = ConexionBD.conexionMongoDB
 
   override def get(isbn: String): Future[Option[Libro]] = {
@@ -32,6 +31,16 @@ object LibroRepositoryImpl extends LibroRepository {
     }
   }
 
+  override def delete(idLibro: String): Future[Either[MensajeRespuesta, MensajeRespuesta]] = {
+    conexionMongoDB.getColeccion("Libros").flatMap(collection =>
+      collection.findAndRemove(BSONDocument("_id" -> idLibro)))
+      .map(e =>
+        if (e.value.isDefined)
+          Right(MensajeRespuesta(s"Se elimino el libro con id [$idLibro]", 202))
+        else
+          Left(MensajeRespuesta(s"no se encontro el libro con id [$idLibro]", 404))
+      )
+  }
 }
 
 
