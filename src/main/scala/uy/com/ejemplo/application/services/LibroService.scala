@@ -23,7 +23,7 @@ trait LibroService {
     (repository: LibroRepository) => repository.save(libro)
   )
 
-  def eliminarLibro(idLibro: String): Reader[LibroRepository, Future[Either[MensajeRespuesta, MensajeRespuesta]]] = Reader(
+  def eliminarLibro(idLibro: String): Reader[LibroRepository, Future[Boolean]] = Reader(
     (repository: LibroRepository) => repository.delete(idLibro)
   )
 

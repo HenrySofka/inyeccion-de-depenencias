@@ -33,15 +33,10 @@ object LibroMayusculaRepositoryImpl extends LibroRepository {
     }
   }
 
-  override def delete(idLibro: String): Future[Either[MensajeRespuesta, MensajeRespuesta]] = {
+  override def delete(idLibro: String): Future[Boolean] = {
     conexionMongoDB.getColeccion("Libros").flatMap(collection =>
       collection.findAndRemove(BSONDocument("_id" -> idLibro)))
-      .map(e =>
-        if (e.value.isDefined)
-          Right(MensajeRespuesta(s"Se elimino el libro con id [$idLibro]", 202))
-        else
-          Left(MensajeRespuesta(s"Se elimino el libro con id [$idLibro]", 404))
-      )
+      .map(e => e.value.isDefined)
   }
 
 }

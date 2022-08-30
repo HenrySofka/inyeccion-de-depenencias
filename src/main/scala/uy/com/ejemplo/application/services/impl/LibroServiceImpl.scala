@@ -50,13 +50,15 @@ object LibroServiceImpl extends LibroService {
     )
   }
 
-  def eliminiarLibroPorId(idLibro: String): Kleisli[Id.Id, LibroRepository, Future[MensajeRespuesta]] = {
+  def eliminiarLibroPorId(idLibro: String): Kleisli[Id.Id, LibroRepository, Future[Either[MensajeRespuesta, MensajeRespuesta]]] = {
     eliminarLibro(idLibro).map(futureResponse =>
       futureResponse
-        .flatMap {
-          case Right(value) => Future(value)
-          case Left(value) => Future(value)
-        }
+        .flatMap(respuesta => {
+          if (respuesta)
+            Future(Right(MensajeRespuesta(s"se elimino el libro con id $idLibro correctamente", 202)))
+          else
+            Future(Left(MensajeRespuesta(s"no se encontro el libro con id $idLibro", 404)))
+        })
     )
   }
 

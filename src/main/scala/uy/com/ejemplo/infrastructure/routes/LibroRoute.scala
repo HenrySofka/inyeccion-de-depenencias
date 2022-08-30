@@ -52,7 +52,7 @@ case class LibroRoute(repository: LibroRepository) extends LibroService {
     path("api-libreria" / "libros" / "eliminar-por-isbn" / Segment) {
       isbn =>
         delete {
-          onSuccess(run(LibroServiceImpl.eliminarLibro(isbn))) {
+          onSuccess(run(LibroServiceImpl.eliminiarLibroPorId(isbn))) {
             case Right(value) => complete(value.statusCode, value.mensaje)
             case Left(value) => complete(value.statusCode, value.mensaje)
           }

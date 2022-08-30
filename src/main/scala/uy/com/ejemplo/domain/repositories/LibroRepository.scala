@@ -14,7 +14,7 @@ trait LibroRepository {
 
   def save(libro: Libro): Future[WriteResult]
 
-  def delete(idLibro: String): Future[Either[MensajeRespuesta, MensajeRespuesta]]
+  def delete(idLibro: String): Future[Boolean]
 
 }
 
