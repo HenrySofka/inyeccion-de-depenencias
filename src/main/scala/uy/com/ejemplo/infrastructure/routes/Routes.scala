@@ -7,6 +7,6 @@ import ch.megard.akka.http.cors.scaladsl.CorsDirectives.cors
 case class Routes() {
   /* Colocar todas las Rutas en una variable utilizando cors */
   val routes: Route = cors() {
-    concat(LibroRoute.routes)
+    concat(LibroRoute().routes)
   }
 }

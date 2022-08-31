@@ -1,11 +1,9 @@
 package uy.com.ejemplo.application.services
 
-import reactivemongo.api.bson.BSONDocument
 import reactivemongo.api.commands.WriteResult
 import scalaz.Reader
 import uy.com.ejemplo.domain.entities.Libro
 import uy.com.ejemplo.domain.repositories.LibroRepository
-import uy.com.ejemplo.domain.respuestas.MensajeRespuesta
 
 import scala.concurrent.Future
 
