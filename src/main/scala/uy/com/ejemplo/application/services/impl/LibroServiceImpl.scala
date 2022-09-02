@@ -39,15 +39,23 @@ case class LibroServiceImpl(repository: LibroRepository) extends LibroService {
   }
 
   def crearLibro(libro: Libro): Future[Either[MensajeRespuesta, MensajeRespuesta]] = {
-    run(crearLibroDB(libro).map(futureResultado => futureResultado))
-      .map(e => e.writeConcernError match {
-        case Some(value) =>
-          Left(MensajeRespuesta(s"Error al insertar el libro con ID: [${libro._id}], error encontrado" +
-            s"[${value.errmsg}]", 500))
-        case None =>
-          Right(MensajeRespuesta(s"Se creo correctamente", 201))
-      })
 
+    for {
+      busqueda <- obtenerLibroXIsbn(libro.isbn)
+      resultado <- busqueda match {
+        case Right(value) => Future(Left(MensajeRespuesta(s"Ya existe un libro con ese isbn: ${libro.isbn}", 409)))
+        case Left(value) =>
+          run(crearLibroDB(libro).map(futureResultado => futureResultado))
+            .map(e => e.writeConcernError match {
+              case Some(value) =>
+                Left(MensajeRespuesta(s"Error al insertar el libro con ID: [${libro._id}], error encontrado" +
+                  s"[${value.errmsg}]", 500))
+              case None =>
+                Right(MensajeRespuesta(s"Se creo correctamente", 201))
+            })
+      }
+    } yield
+      resultado
   }
 
   def eliminiarLibroPorId(idLibro: String): Future[Either[MensajeRespuesta, MensajeRespuesta]] = {
