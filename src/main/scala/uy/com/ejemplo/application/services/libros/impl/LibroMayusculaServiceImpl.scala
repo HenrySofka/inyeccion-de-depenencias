@@ -1,10 +1,10 @@
-package uy.com.ejemplo.application.services.impl
+package uy.com.ejemplo.application.services.libros.impl
 
 import scalaz.{Id, Kleisli}
-import uy.com.ejemplo.application.services.LibroService
-import uy.com.ejemplo.application.services.impl.LibroServiceImpl.crearLibroDB
+import uy.com.ejemplo.application.services.libros.LibroService
+import uy.com.ejemplo.application.services.libros.impl.LibroServiceImpl.crearLibroDB
 import uy.com.ejemplo.domain.entities.Libro
-import uy.com.ejemplo.domain.repositories.LibroRepository
+import uy.com.ejemplo.domain.repositories.libros.LibroRepository
 import uy.com.ejemplo.domain.respuestas.MensajeRespuesta
 
 import scala.concurrent.ExecutionContext.Implicits.global

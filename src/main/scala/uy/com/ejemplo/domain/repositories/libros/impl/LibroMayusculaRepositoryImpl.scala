@@ -1,16 +1,19 @@
-package uy.com.ejemplo.domain.repositories.impl
+package uy.com.ejemplo.domain.repositories.libros.impl
 
 import reactivemongo.api.Cursor
 import reactivemongo.api.bson.BSONDocument
 import reactivemongo.api.commands.WriteResult
 import uy.com.ejemplo.domain.entities.Libro
-import uy.com.ejemplo.domain.repositories.LibroRepository
+import LibroRepositoryImpl.conexionMongoDB
+import uy.com.ejemplo.domain.repositories.libros.LibroRepository
+import uy.com.ejemplo.domain.respuestas.MensajeRespuesta
 import uy.com.ejemplo.infrastructure.db.mongo.ConexionBD
 
+import java.util.UUID
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-object LibroRepositoryImpl extends LibroRepository {
+object LibroMayusculaRepositoryImpl extends LibroRepository {
   private val conexionMongoDB: ConexionBD = ConexionBD.conexionMongoDB
 
   override def get(isbn: String): Future[Option[Libro]] = {
@@ -26,7 +29,7 @@ object LibroRepositoryImpl extends LibroRepository {
 
   override def save(libro: Libro): Future[WriteResult] = {
     conexionMongoDB.getColeccion("Libros").flatMap { col =>
-      col.insert.one(libro)
+      col.insert.one(libro.copy(nombre = libro.nombre.toUpperCase(), isbn = UUID.randomUUID().toString))
     }
   }
 
@@ -35,16 +38,5 @@ object LibroRepositoryImpl extends LibroRepository {
       collection.findAndRemove(BSONDocument("_id" -> idLibro)))
       .map(e => e.value.isDefined)
   }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-

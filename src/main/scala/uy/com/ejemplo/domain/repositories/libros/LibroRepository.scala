@@ -1,4 +1,4 @@
-package uy.com.ejemplo.domain.repositories
+package uy.com.ejemplo.domain.repositories.libros
 
 import reactivemongo.api.commands.WriteResult
 import uy.com.ejemplo.domain.entities.Libro
@@ -15,4 +15,3 @@ trait LibroRepository {
   def delete(idLibro: String): Future[Boolean]
 
 }
-

@@ -6,8 +6,8 @@ import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import ch.megard.akka.http.cors.scaladsl.CorsDirectives.cors
 import spray.json.RootJsonFormat
-import uy.com.ejemplo.application.services.LibroService
-import uy.com.ejemplo.application.services.impl.LibroServiceImpl
+import uy.com.ejemplo.application.services.libros.LibroService
+import uy.com.ejemplo.application.services.libros.impl.LibroServiceImpl
 import uy.com.ejemplo.domain.dto.LibroDto
 import uy.com.ejemplo.domain.entities.Libro
 import uy.com.ejemplo.domain.helpers.LibroHelper

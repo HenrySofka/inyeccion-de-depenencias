@@ -1,9 +1,9 @@
-package uy.com.ejemplo.application.services
+package uy.com.ejemplo.application.services.libros
 
 import reactivemongo.api.commands.WriteResult
 import scalaz.Reader
 import uy.com.ejemplo.domain.entities.Libro
-import uy.com.ejemplo.domain.repositories.LibroRepository
+import uy.com.ejemplo.domain.repositories.libros.LibroRepository
 
 import scala.concurrent.Future
 
